@@ -6,6 +6,7 @@ Today I Learned
 * 제목은 모두 소문자로 구성한다.
 * 단어 구분은 하이픈(-)으로 한다.
 * [학습종류]-[제목] ex) cpp-dynamic-array
+* [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
 # Gollum Wiki
 

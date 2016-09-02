@@ -11,5 +11,5 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
 
 * cmd + shift + p 로 Package Control: Install Package 선택
 * MarkdownEditing: 코드 이쁘게
-* SmartMarkdown: 헤더 단위로 접는 폴딩 기
+* SmartMarkdown: 헤더 단위로 접는 폴딩 기능
 * Markdown Preview: 미리보기

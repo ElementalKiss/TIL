@@ -41,3 +41,27 @@ ParseResult 클래스의 속성
 
 & 책에는 2.7버전 링크가 되어있으나 난 3.4 stable 버전
 [urlparse module link](https://docs.python.org/3.4/library/urllib.parse.html#module-urllib.parse)
+
+### urllib2 모듈
+
+주어진 URL에서 데이터를 가져오는 기본 기능을 제공. urlopen() 함수
+
+```
+urlopen(url, data=None, [timeout])
+```
+
+* url 인자로 지정한 URL로 유사 파일 객체를 반환한다. url 인자는 문자열이거나 Request 클래스의 인스턴스가 올 수 있다.
+* url에 file 스킴을 지정하면 로컬 파일을 열 수 있다.
+* 디폴트 요청 방식은 GET
+* POST로 보내고 싶으면 data 인자에 질의 문자열을 지정해주면 된다.
+
+이 외에도 URL을 처리하기 위해서 urlretrieve(), quote(), unquote(), urlencode() 등의 함수가 필요하다. <br>
+
+& 3.x 이상 버전에선 urllib.request 쪽으로 통합된 듯 하다. [url.request link](https://docs.python.org/3.4/library/urllib.request.html)
+
+#### urlopen() 함수 사용 방법
+
+* URL로 GET/POST 방식의 간단한 요청 처리: urlopen() 함수만으로 가능
+* 요청 헤더 추가, 변경이 필요한 경우: Request 클래스를 같이 사용
+* 인증, 쿠키, 프록시 등 복잡한 요청 처리: 인증/쿠키/프록시 해당 핸들러 클래스를 같이 사용
+

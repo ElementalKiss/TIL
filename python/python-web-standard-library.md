@@ -65,3 +65,97 @@ urlopen(url, data=None, [timeout])
 * 요청 헤더 추가, 변경이 필요한 경우: Request 클래스를 같이 사용
 * 인증, 쿠키, 프록시 등 복잡한 요청 처리: 인증/쿠키/프록시 해당 핸들러 클래스를 같이 사용
 
+
+##### GET 방식으로 호출
+```
+>>> from urllib2 import urlopen
+>>> f = urlopen("http://www.example.com")
+>>> print f.read(500)
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background-color: #f0f0f2;
+        margin: 0;
+        padding: 0;
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    }
+    div {
+        width: 600px;
+        margin:
+>>>
+```
+
+##### POST 방식으로 호출
+
+```
+>>> from urllib2 import urlopen
+>>> data = "query=python"
+>>> f = urlopen("http://www.example.com", data)
+>>> print f.read(300)
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background
+>>>
+```
+
+##### Request 객체를 생성해서 보내는 방법
+
+```
+>>> import urllib2
+>>> req = urllib2.Request("http://www.example.com")
+>>> req.add_header("Content-Type", "text/plain")
+>>> req.add_data("query=python")
+>>> f = urllib2.urlopen(req)
+>>> print f.read(300)
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background
+>>>
+```
+
+##### 좀 더 복잡한 요청
+
+인증 데이터나 쿠키 데이터를 추가하여 요청을 보내거나, 프록시 서버로 요청을 보내는 등 HTTP의 고급 기능을 포함하여 요청을 보낼 수 있다.
+
+* 각 기능에 맞는 핸들러 객체를 정의
+* 그 핸들러를 build_opener() 함수를 사용해 오프너로 등록
+* urlopen() 함수로 열기 위해 install_opener() 함수를 사용해 디폴트 오프너로 설정
+
+### httplib 모듈
+
+웹 클라이언트는 대부분은 urllib2 모듈로 작성이 가능하지만 저수준의 더 세밀한 기능이 필요할 때 httplib 모듈을 사용한다.
+
+
+#### httplib 모듈 사용 시 코딩 순서
+
+* 연결 객체 생성: conn=httplib.HTTPConnection("www.python.org")
+* 요청을 보냄: conn.request("GET", "/index.html")
+* 응답 객체 생성: respone=conn.getresponse()
+* 응답 데이터 읽음: data=respone.read()
+* 연결 닫음: conn.close()
+
+## 웹 서버 라이브러리

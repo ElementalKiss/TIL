@@ -12,12 +12,12 @@ WSGI: 아파치와 같은 상용 웹 서버와의 연동에 필요
 * 웹 서버 프로그래밍
 
 Web Framework: Django, Flask, Tornado, 등 <br>
-웹 서버용 API: http.cookie, http.server <br>
+웹 서버용 API: http.cookie, http.server
 
 
 * 웹 클라이언트 프로그래밍
 
-고수준 API(urllib 패키지): urllib.parse, urllib.request, urllib.error, urllib.respone, urllib.robotparser
+고수준 API(urllib 패키지): urllib.parse, urllib.request, urllib.error, urllib.respone, urllib.robotparser <br>
 웹 클라이언트용 API(저수준 API) : http.client, http.cookiejar
 
 ## 웹 클라이언트 라이브러리
@@ -29,6 +29,7 @@ URL의 분해, 조립, 변경 등을 처리하는 함수를 제공한다.
 urlparse() 함수: URL을 파싱한 결과로 ParseResult 인스턴스를 반환한다. 
 
 ParseResult 클래스의 속성
+
 * scheme: URL에 사용된 프로토콜을 의미한다.
 * netloc: 네트워크 위치. user:password@host:port 형식으로 표현되며, http 프로토콜인 경우 hots:port 형식이다.
 * path: 파일이나 애플리케이션 경로를 의미.

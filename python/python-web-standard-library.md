@@ -159,3 +159,27 @@ urlopen(url, data=None, [timeout])
 * 연결 닫음: conn.close()
 
 ## 웹 서버 라이브러리
+
+### 간단한 웹 서버
+
+```
+#!/usr/bin/env python
+
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+
+class MyHandler(BaseHTTPRequestHandler):
+  def do_GET(self):
+    self.wfile.write("Hello World")
+
+if __name__ == '__main__':
+  server = HTTPServer(('', 8888), MyHandler)
+  print "Started WebServer on port 8888..."
+  server.serve_forever()
+```
+
+#### 웹 서버 만드는 기본 룰
+
+* BaseHTTPServer 모듈 임포트
+* BaseHTTPRequestHandler를 상속, 원하는 로직으로 핸들러 클래스 정의
+* 서버의 IP, PORT 및 핸들러 클래스를 인자로 하여 HTTPServer 객체를 생성
+* HTTPServer 객체의 serve_forever() 메소드 호출

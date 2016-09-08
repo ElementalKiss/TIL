@@ -183,3 +183,30 @@ if __name__ == '__main__':
 * BaseHTTPRequestHandler를 상속, 원하는 로직으로 핸들러 클래스 정의
 * 서버의 IP, PORT 및 핸들러 클래스를 인자로 하여 HTTPServer 객체를 생성
 * HTTPServer 객체의 serve_forever() 메소드 호출
+
+Base가 되는 모듈은 BaseHTTPServer, SimpleHTTPServer, CGIHTTPServer 모듈이 있다.
+
+#### SimpleHTTPServer 모듈
+간단한 핸들러(SimpleHTTPRequestHandler)가 미리 구현되어 있어 필요할 때 즉시 웹 서버를 실행할 수 있다. SimpleHTTPRequestHandler는 do_GET(), do_HEAD() 메소드가 정의되어 있어서 GET 및 HEAD 방식을 처리할 수 있다.
+
+$ python -m SimpleHTTPServer 8888
+
+#### CGIHTTPServer 모듈
+CGIHTTPServer 모듈에는 CGIHTTPRequestHandler가 미리 정의되어 있고 이는 do_POST() 메소드가 정의되어 있어 POST 방식을 처리할 수 있다. 또한 SimpleHTTPRequestHandler를 상속받고 있어서 GET, HEAD 방식 역시 처리 가능하다.
+
+### xxxHTTPServer 모듈간의 관계
+
+#### 상속도
+CGIHTTPRequestHandler -> SimpleHTTPRequestHandler -> BaseHTTPRequestHandler -> StreamRequestHandler -> BaseRequestHandler
+
+## CGI/WSGI 라이브러리
+
+WSGI(Web Server Gateway Interface): 웹 서버와 웹 애플리케이션을 연결해주는 규격으로 장고와 같은 웹 프레임워크를 개발하거나 아파치와 같은 웹 서버와 연동할 때 사용한다.
+
+### CGI 관련 모듈
+
+### WSGI 개요
+
+### WSGI 서버의 어플리케이션 처리 과정
+
+### wsgiref.simple_server 모듈

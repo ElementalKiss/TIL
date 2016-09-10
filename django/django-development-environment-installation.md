@@ -60,6 +60,16 @@ sudo python get-pip.py
 sudo pip install Django==1.10.1
 ```
 
+#### 파이썬에서 장고 버전 확인
+
+```
+python
+>>> django.VERSION
+(1, 10, 1, 'final', 1)
+>>> django.get_version()
+'1.10.1'
+```
+
 ### Troubleshooting
 
 * sudo pip 안 될 때

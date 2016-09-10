@@ -39,7 +39,7 @@ ParseResult 클래스의 속성
 
 그 외에도 urlsplit(), urljoin(), parse_qs() 함수 등이 있다.
 
-& 책에는 2.7버전 링크가 되어있으나 난 3.4 stable 버전
+> 책에는 2.7버전 링크가 되어있으나 난 3.4 stable 버전
 [urlparse module link](https://docs.python.org/3.4/library/urllib.parse.html#module-urllib.parse)
 
 ### urllib2 모듈
@@ -57,7 +57,7 @@ urlopen(url, data=None, [timeout])
 
 이 외에도 URL을 처리하기 위해서 urlretrieve(), quote(), unquote(), urlencode() 등의 함수가 필요하다. <br>
 
-& 3.x 이상 버전에선 urllib.request 쪽으로 통합된 듯 하다. [url.request link](https://docs.python.org/3.4/library/urllib.request.html)
+> 3.x 이상 버전에선 urllib.request 쪽으로 통합된 듯 하다. [url.request link](https://docs.python.org/3.4/library/urllib.request.html)
 
 #### urlopen() 함수 사용 방법
 
@@ -213,4 +213,57 @@ CGI의 프로세스 부하의 단점을 해결하기 위해 Fast CGI, 쓰레드 
 
 ### WSGI 서버의 어플리케이션 처리 과정
 
+|             | 1. Request ↓                                   | ↑ 15. Respone              |
+| --------    | :------:                                       | --------                   |
+| Web Server  | 2. Request URL 분석                              |                            |
+| Web Server  | 3. WSGIScriptAlias에 정의된 URL이면, <br> WSGI 서버에 처리 위임  |                            |
+|             | 4. 파라미터 전달 ↓                                   | ↑ 14. 처리 결과                |
+| WSGI 서버     | 5. WSGIScriptAlias에 정의된 wsgi.py 실행             | 13. 표준 출력(stdout)에 결과 출력   |
+| WSGI 서버     | 6. application(environ, start_responese) 함수 호출 |                            |
+|             | 7. Call ↓                                      | ↑ 12. Return               |
+| application | 8.environ 환경변수 처리                              | 11. return HTTPResponse    |
+| application | 9. 뷰 처리, HTTPRequest 객체 생성                     | 10. start_response() 함수 호출 |
+
+#### WSGI 규격에 따라 애플리케이션 개발할 때 중요한 사항
+
+* 필요한 애플리케이션을 함수 또는 클래스의 메소드로 정의, 애플리ㅔ이션 함수의 인자를 다음과 같이 정의 한다.
+
+```
+def application_name(environ, start_response) :
+```
+
+environ: 웹 프레임워크에 이미 정의되어 있으며, HTTP_HOST, HTTP_USER_AGENT, SERVER_PROTOCOL과 같은 HTTP 환경변수를 포함한다. <br>
+start_response: 애플리케이션 내에서 응답을 시작하기 위해 반드시 호출해야 하는 함수.
+
+* start_response 함수의 인자 역시 다음과 같이 정애져 있으므로 그대로 따른다.
+
+```
+start_response(status, headers)
+```
+
+status: 응답 코드 및 응답 메시지를 지정한다.(200 OK, 404 Not Found 등). <br>
+headers: 응답 헤더를 포함한다.
+
+* 애플리케이션 함수의 리턴값은 응답 바디에 해당하는 내용, 리스트나 제너레이터와 같은 iterable 타입이어야 한다.
+
 ### wsgiref.simple_server 모듈
+
+wsgiref 패키지 하위 모듈로 WSGI 스펙을 준수하는 웹 서버에 대한 참조 서버, 즉 개발자에게 참고가 될 수 있도록 미리 만들어 놓은 WSGIServer 클래스와 WSGIRequestHandler 클래스를 정의하고 있다. Flask 웹 프레임워크는 wsgifet 패키지를 사용하지 않은 WSGI 웹 서버이다.
+
+```
+#!/usr/bin/env python
+
+def my_app(environm, start_response) :
+  status = "200 OK"
+  headers = [('Content-Type', 'text/plain')]
+  start_response(status, headers)
+
+  return ["This is a sample WSGI Application."]
+
+if __name__ == '__main__' :
+  from wsgiref.simple_server import make_server
+
+  print "Started WSGI Server on port 8888..."
+  server = make_server('', 8888, my_app)
+  server.serve_forever()
+```

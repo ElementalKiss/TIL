@@ -51,3 +51,27 @@ Widget w3(); // 인수 없이 Widget의 생성자 호출
 ```
 
 ## 왜 제목이 균일 초기화를 선호하라가 아니가?
+
+중괄호의 단점은 종종 예상치 못한 행동을 보인다는 것. 중괄호 초기치, std::initializer_list, 생성자 중복적재 해소 사이의 관계에서 비롯되는 문제이다.
+
+```
+class Widget {
+public:
+    Widget(int i, bool b);
+    Widget(int i, double d);
+    Widget(std::initializer_list<long double> il);
+    ...
+};
+```
+
+이렇게 Widget 클래스가 정의되어 있을 때,
+
+```
+Widget w1(10, true); // 괄호; 첫 생성자 호출
+Widget w2{10, true}; // 중괄호; std::initializer_list 생성자 호출 10과 true가 long double로 변환
+
+Widget w3(std::move(w1)); // 괄호; 이동 생성자 호출
+Widget w4(std::move(w2)); // 중괄호; initializer_list 생성자 호출
+```
+
+심지어 Widget initializer_list<bool>로 선언해놔도 Widget w{10, 5.0};은 initializer_list 생성자를 호출해 오류를 낸다.

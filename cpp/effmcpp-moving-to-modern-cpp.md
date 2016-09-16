@@ -75,3 +75,46 @@ Widget w4(std::move(w2)); // 중괄호; initializer_list 생성자 호출
 ```
 
 심지어 Widget initializer_list<bool>로 선언해놔도 Widget w{10, 5.0};은 initializer_list 생성자를 호출해 오류를 낸다.
+
+### 컴파일러가 중복적재를 포기하는 경우
+
+```
+Widget(std::initializer_list<std::string> li);
+```
+
+int와 bool은 string으로 변환하는 방법이 없으므로 괄호, 중괄호 모두 Widget(int i, bool b)를 호출한다.
+
+### 흥미로운 극단적 경우
+
+기본 생성을 지원하며 std::initializer_list 생성도 지원하는 객체를 빈 중괄호 쌍으로 생성하는 경우이다.
+
+#### 컴파일러가 빈 중괄호를 어떻게 받아들이는가?
+
+* 인수 없음: 기본 생성자 호
+* 빈 std::initializer_list: 요소가 하나도 없는 std::initializer_list를 초기치로 사용한 객채 생성
+
+#### 표준
+
+표준에 따르면 이런 경우는 기본 생성자가 호출된다.
+
+```
+class Widget {
+public:
+    Widget();
+    Widget(std::initializer_list<int> li);
+
+    ...
+}
+
+Widget w1{}; // 기본 생성자 호출
+Widget w2(); // 함수 선언
+```
+
+#### if std::initializer_list를 호출하고 싶다면
+
+중괄호 쌍을 괄호로 감싸거나 빈 중괄호 쌍을 또 다른 중괄호 쌍으로 감싸면 된다.
+
+```
+Widget w3({});
+Widget w4{{}};
+```

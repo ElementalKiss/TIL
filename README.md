@@ -11,9 +11,10 @@ Today I Learned
 # Gollum Wiki
 
 ## gollum 설치 및 실행(centos)
+
 * rvm 설치. 현재 버전은 2.2.2
 
-예전에 rails 설치하면서 다양한 삽질을 한 것 같은데 다시 설치할 일 있으면 trouble shooting을 해야겠다.
+> 예전에 rails 설치하면서 다양한 삽질을 한 것 같은데 다시 설치할 일 있으면 trouble shooting을 해야겠다.
 
 * gollum 설치
 
@@ -22,6 +23,7 @@ sudo yum group install "Development Tools"
 sudo yum install ruby ruby-devel libicu libicu-devel zlib zlib-devel git
 sudo gem install gollum
 ```
+
 * git 리포지토리에서 gollum 명령어로 실행
 * address:4567 로 접근
 

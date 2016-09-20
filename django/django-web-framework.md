@@ -64,6 +64,40 @@ MVC 패턴을 기반으로 한 프레임워크이다. 장고는 View, Template, 
 
 ### Model - DB 설계
 
+사용될 데이터에 대한 정의를 담고 있는 장고의 클래스이다. ORM 기법을 이용하여 데이터베이스를 클래스로 맵핑한다. 모델 클래스는 하나의 테이블, 모댈 클래스의 속성은 테이블의 컬럼.
+
+#### ORM 장점
+
+* SQL을 직접 작성할 필요가 없다.
+* 필요에 따라 데이터베이스를 변경하기 좋다. ORM을 통한 API는 변경할 필요가 없으므로.
+
+### ORM 예시
+
+우선 model.py를 만든다.
+
+~~~~
+from django.dv import models
+
+
+class Person(model.Model):
+  first_name = models.CharField(max_len=30)
+  ...
+~~~~
+
+이렇개 만들면 위 person 모델은 내부적으로 SQL 명령을 사용하여 테이블을 생성한다.
+
+~~~~
+CREATE TABLE myapp_person (
+  "id serial" NOT NULL PRIMARY KEY,
+  "first_name" varchar(30) NOT NULL,
+);
+~~~~
+
+#### django 모델 태이블 생성 규칙
+
+* 테이블 애플리케이션명과 테이블 클래스명을 밑주로 연결하고, 모두 소문자. 원한다면 다른 이름으로 지정할 수 있다.
+* Primart key는 Person 클래스에 정의하지 않아도 장고에서 자동 부여. 개발자가 재설정 가능.
+
 ### Template - 화면 UI 설계
 
 ### URLconf - URL 설계

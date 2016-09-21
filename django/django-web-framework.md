@@ -75,23 +75,23 @@ MVC 패턴을 기반으로 한 프레임워크이다. 장고는 View, Template, 
 
 우선 model.py를 만든다.
 
-~~~~
+```
 from django.dv import models
 
 
 class Person(model.Model):
   first_name = models.CharField(max_len=30)
   ...
-~~~~
+```
 
 이렇개 만들면 위 person 모델은 내부적으로 SQL 명령을 사용하여 테이블을 생성한다.
 
-~~~~
+```
 CREATE TABLE myapp_person (
   "id serial" NOT NULL PRIMARY KEY,
   "first_name" varchar(30) NOT NULL,
 );
-~~~~
+```
 
 #### django 모델 태이블 생성 규칙
 
@@ -100,7 +100,96 @@ CREATE TABLE myapp_person (
 
 ### Template - 화면 UI 설계
 
+#### 확장자와 주의할 점
+
+.html 확장자를 가지며, 장고의 템플릿 시스템 문법에 맞게 작성해야 한다. 유의할 점은 적절한 디렉토리에 위치해야 한다는 것.
+
+#### 템플릿 파일 찾는 법
+
+* TEMPLATE DIRS 및 INSTALLED_APPS에서 지정된 디렉토리를 검색한다.
+* 이 항목들은 프로젝트 설정 파일인 settings.py 파일에 정의되어 있다. 여러 개의 디렉토리를 지정할 수 있으며 지정된 순서대로 디렉토리를 검색하여 템플릿 파일을 찾는다.
+
+#### settings.py의 예
+
+```
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes'
+    'polls'
+    ...
+)
+
+TEMPLATE_DIRS = ['/home/elkiss/work/python/templates']
+```
+
+이렇게 정의 한다면 다음과 같은 순서대로 템플릿 디렉토리를 검색한다.
+
+```
+/home/elkiss/work/python/templates
+/usr/lib/python3.4/site-packages/django/contrib/admin/template
+/usr/lib/python3.4/site-packages/django/contrib/auth/template
+/usr/lib/python3.4/site-packages/django/contrib/contenttypes/template
+/home/elkiss/work/python/polls/templates
+...
+```
+
+#### 순서 주의
+
+TEMPLATE_DIRS 항목에 정의된 디렉토리를 먼저 찾고, 그 다음에 INSTALLED_APPS 항목의 디렉토리를 찾는다는 점을 유의해야 한다.
+
 ### URLconf - URL 설계
+
+우아한(?) URL. URL을 정의하기 위해서는 urls.py 파일에 URL과 처리 함수(뷰; view)를 매핑하는 파이썬 코드를 작성줘야 한다. 이러한 URL과 뷰의 맥핑을 URLconf라고 한다.
+
+#### URLconf 예시
+
+```
+from django.conf.urls import patterns, url
+
+from . import views
+
+urlpatterns = patterns('',
+  url(r'^articles/2003/$', views.special_case_2003),
+  url(r'^articles/(\d{4})/$', views.year_archive),
+  url(r'^articles/(\d{4})/(\d{2})/$', views.month_archive),
+  url(r'^articles/(\d{4})/(\d{2}/(\d+))/$', views.artivle_detail)
+)
+```
+
+
+> 이게 뭐다? 우아함! 엘레강스!
+
+#### 장점
+
+* URL과 처리 함수를 매핑하는 방법은 개발자에게 많은 유연성을 준다.
+* URL 자체에 처리 로직이 들어가면 이름 변경이 어려워진다. 반면 URLconf를 사용하면 URL과 뷰 함수를 서로 자유롭게 연결할 수 있다.
+
+#### 웹 클라가 웹 서버에 페이지 요청 시, 장고가 URL을 분석하는 순서
+
+* setting.py 파일의 ROOT_URLCONF 항목을 읽어 URLconf(urls.py)의 위치를 알아낸다.
+* URLconf 모듈을 로딩하여 urlpatterns 변수에 지정되는 URL 리스트를 검사한다.
+* URL 리스트에서 내용을 검색한다.
+* 매치가 된 URL의 뷰를 호출한다. 뷰는 함수 또는 클래스. 호출 시 HttpRequest 객체와 매칭할 때 추출된 단어들을 뷰에 인자로 넘겨준다.
+* 리스트 끝까지 검사했는데도 매칭이 실패하면 에러 처리하는 뷰를 호출.
+
+#### 정규표현식에 사용되는 문자들
+
+| 표현       | 의미                                                |
+| ---      | ---                                               |
+| .(dot)   | 모든 문자 하나(any single character)                    |
+| ^(Caret) | 문자열의 시작                                           |
+| $        | 문자열의 끝                                            |
+| []       | [] 괄호에 있는 문자 하나, 예를 들어 [akx]라면 a또는 k또는 z          |
+| [^]      | []괄호에 있는 문자 이외의 문자 하나, 만일 [^ab]라면 a와 b를 제외한 문자 하나 |
+|*|0번 이상 반복, {0,}와 동일|
+|+|1번 이상 반복, {1,}와 동일|
+|?|0번 또는 1번 반복, {0,1}과 동일|
+|{n}|n번 반복|
+|{m,n}|최소 m번에서 최대 n번까지 반복|
+|[a-z]|a-z 임의의문자, 즉 영문 소문자 한개|
+|\w|영문, 숫자 또는 밑줄(_) 한 개, [0-9a-zA-Z_]와 동일|
+|\d|숫자 한 개, [0-9]와 동일|
 
 ### View - 로직 설계
 

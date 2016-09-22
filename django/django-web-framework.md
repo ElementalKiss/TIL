@@ -193,40 +193,16 @@ urlpatterns = patterns('',
 
 ### View - 로직 설계
 
-## 프로젝트 뼈대 만들기
+뷰는 웹 요청을 받아 데이터베이스 접속 등 해당 애플리케이션의 로직에 맞는 처리를 하고, 그 결과 데이터를 HTML로 변환하기 위해 템플릿 처리 후 HTML로 된 응답 데이터를 웹 클라이언트로 반환한다.
 
-### 프로젝트 생성
+#### Simple View 예시(클래스 아닌 함수로 뷰 작성한 예시)
 
-### 애플리케이션 생성
+```
+from django.http import HttpResponse
+import current_datetime(request):
+  now = datetime.datetime.now()
+  html = "<html><body>It is now %s. </body></html>" % now
+  return HttpResponse(html)
+```
 
-### 데이터베이스 변경사항 반영
-
-### 확인해보기
-
-## 애플리케이션 개발하기 - 설계
-
-## 애플리케이션 개발하기 - Model 코딩
-
-### DB 지정
-
-### 테이블 정의
-
-### Admin 사이트에 테이블 반영
-
-### DB 변경사항 반영
-
-### 확인해보기
-
-## 애플리케이션 개발하기 - View와 Template 코딩
-
-### URLconf 코딩
-
-### 뷰 함수 index() 및 템플릿 작성
-
-### 뷰 함수 detail() 및 폼 템플릿 작성
-
-### 뷰 함수 vote() 및 리다이렉션 작성
-
-### 뷰 함수 results() 및 템플릿 작성
-
-### 확인해보기
+뷰 함수는 첫 번째 인자로 HttpRequest 객체를 받는다. 필요한 처리 후 HttpResponse 리턴.

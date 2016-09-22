@@ -59,6 +59,13 @@ $ python manage.py runserver
 
 ### 프로젝트 생성
 
+```
+django-amin.py startproject mysite
+mv mysite ch3
+```
+
+mysite로 만들면 상위 mysite는 프로젝트 고나련 디렉토리와 파일을 모으는 역할만 하므로 실제 하위 mysite 프로젝트 이름과 혼동될 수 있으므로 mv로 ch3로 바꿔준다.
+
 ### 애플리케이션 생성
 
 ### 데이터베이스 변경사항 반영

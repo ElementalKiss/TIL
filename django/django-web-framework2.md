@@ -88,6 +88,22 @@ rails의 그것과 매우 유사하다.
 python manage.py runserver 0.0.0.0:8000
 ```
 
+> 확인해보니 "It worked! Congratulations on your first Django-powered page."라는 
+
+#### 관리자 계정 들어가기
+
+```
+host:8000/admin
+```
+
+#### 관리가 계정 만들기
+
+```
+python manage.py createsuperuser
+```
+
+아이디와 비밀번호를 입력하여 만들 수 있다.
+
 ## 애플리케이션 개발하기 - 설계
 
 ## 애플리케이션 개발하기 - Model 코딩

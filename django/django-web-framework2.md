@@ -88,7 +88,7 @@ rails의 그것과 매우 유사하다.
 python manage.py runserver 0.0.0.0:8000
 ```
 
-> 확인해보니 "It worked! Congratulations on your first Django-powered page."라는 메시지의 웹 페이지가 정상 동작 하였다.qqqqㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ
+> 확인해보니 "It worked! Congratulations on your first Django-powered page."라는 메시지의 웹 페이지가 정상 동작 하였다.
 
 #### 관리자 계정 들어가기
 

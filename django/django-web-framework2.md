@@ -88,7 +88,7 @@ rails의 그것과 매우 유사하다.
 python manage.py runserver 0.0.0.0:8000
 ```
 
-> 확인해보니 "It worked! Congratulations on your first Django-powered page."라는 
+> 확인해보니 "It worked! Congratulations on your first Django-powered page."라는 메시지의 웹 페이지가 정상 동작 하였다.qqqqㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ
 
 #### 관리자 계정 들어가기
 
@@ -103,6 +103,8 @@ python manage.py createsuperuser
 ```
 
 아이디와 비밀번호를 입력하여 만들 수 있다.
+
+기본적으로 setting.py에 django.contrib.auth 애플리케이션이 등록되기 때문에 해당 기능을 이용할 수 있다.
 
 ## 애플리케이션 개발하기 - 설계
 

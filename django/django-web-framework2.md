@@ -68,9 +68,25 @@ mysite로 만들면 상위 mysite는 프로젝트 고나련 디렉토리와 파�
 
 ### 애플리케이션 생성
 
+```
+python manage.py startapp polls
+```
+
+polls라는 어플리케이션을 만든다.
+
 ### 데이터베이스 변경사항 반영
 
+```
+python manage.py migrate
+```
+
+rails의 그것과 매우 유사하다.
+
 ### 확인해보기
+
+```
+python manage.py runserver 0.0.0.0:8000
+```
 
 ## 애플리케이션 개발하기 - 설계
 

@@ -46,7 +46,7 @@ ch3
 * views.py: 뷰 함수를 정의하는 파일. 함수형 뷰 및 클래스형 뷰 모두 이 파일에 정의한다.
 * **templates dir: 프로젝트를 진행하면서 추가. 템플릿 파일들이 들어있다. 보통 프로젝트 레벨과 애플리케이션 레벨의 템플릿으로 구분하여 ch3/templates 및 ch3/polls/templates 위치에 생성된다.**
 * **static dir: 프로제그를 진행하면서 추가. CSS, Image, Javascript 파일들이 들어 있다. 위와 마찬가지로 ch3/static 및 ch3/polls/static 위치에 생성된다.**
-* **logs dir: 프로젝트를 진행하면서 추가. 로그 파일이 있다. 로그 위치는 settings.py 파일의 LOGGING 항목으로 지정한다.
+* **logs dir: 프로젝트를 진행하면서 추가. 로그 파일이 있다. 로그 위치는 settings.py 파일의 LOGGING 항목으로 지정한다.**
 
 ### 뼈대 만들기
 

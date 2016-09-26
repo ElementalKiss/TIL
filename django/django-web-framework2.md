@@ -108,9 +108,80 @@ python manage.py createsuperuser
 
 ## 애플리케이션 개발하기 - 설계
 
+### 예제로 짜 볼 애플리케이션
+
+설문에 해당하는 질문을 보여주고 질문에 대한 답변과 결과를 보여주는 애플리ㅔ이션.
+
+* index.html: 최근 실시한 질문의 리스트를 보여준다.
+* detail.html: 하나의 질문에 대해 투표할 수 있도록 답변 항목을 폼으로 보여준다.
+* results.html: 질문에 따른 투표 결과를 보여준다.
+
+### Question 테이블 설계
+
+| 컬럼명  | 타입      | 제약 조건                 | 설명   |
+| ---- | ----    | ----                  | ---- |
+| id   | integer | NotNull, PK, Auto Inc | PK   |
+|question_text|varchar(200)|NotNull|질문 문장|
+|pub_date|datetime|NotNull|질문 생성 시각|
+
+### Choice 테이블 설계
+
+| 컬럼명         | 타입           | 제약 조건                          | 설명       |
+| ----        | ----         | ----                           | ----     |
+| id          | integer      | NotNull, PK, Auto Inc          | PK       |
+| choice_text | varchar(200) | NotNull                        | 답변 항목 문구 |
+| votes       | integer      | NotNull                        | 투표 카운트   |
+| question_id | integer      | NotNull,FK(Question.id), index | FK       |
+
+* Question 테이블: 질문을 저장하는 테이블.
+* Choice 테이블: 질문별로 선택용 답변 항목을 저장하는 테이블.
+* 모든 컬럼은 Not NULL.
+* PK는 Auto Inc 속성으로 지정.
+* Choice 테이블의 question_id 컬럼은 Question의 FK 관계로 연결. 인덱스로 생성하도록 하였다.
+
 ## 애플리케이션 개발하기 - Model 코딩
 
 ### DB 지정
+
+settings.py 설정 파일은 프로젝트 전반적인 사항들을 설정해주는 곳이다. 
+
+```
+# Database
+# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+```
+
+### polls 애플리케이션 등록
+
+```
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'polls',
+]
+```
+
+### 타임 존 지정
+
+```
+LANGUAGE_CODE = 'en-us'
+
+#TIME_ZONE = 'UTC'
+
+TIME_ZONE = 'Asia/Seoul'
+```
 
 ### 테이블 정의
 

@@ -185,7 +185,53 @@ TIME_ZONE = 'Asia/Seoul'
 
 ### 테이블 정의
 
+models.py 작성
+
+```
+from django.db import models
+
+# Create your models here.
+
+class Question(models.Model):
+  question_text = model.CharField(max_length=200)
+  pub_date = models.DateTimeField('data published')
+
+  def __unicode__(self): # __str__ on Python 3
+    return self.question_text
+
+class Choice(models.Model):
+  question = models.ForeignKey(Question)
+  choice_text = models.CharField(max_length=200)
+  votes = models.IntegerField(default=0)
+
+  def __unicode__(self): # __str__ on Python 3
+    return self.choice_text
+```
+
+* PK는 클래스에 지정해주지 않아도 이름을 접두어로 자동으로 생성해준다.
+* DateTimeField() 필드 클래스에 정의한 문구는 pub_date 컬럼에 대한 레이블 문구이다. Admin 사이트에서 이 문구를 보게 된다.
+* FK는 다른 테이블의 PK와 항상 연결되므로 클래스만 연결시켜 주면 된다.
+* __unicode()__ 함수는 객체를 스트링으로 표현할 때 사용하는 함수이다. 파이썬 3에서는 __str__() 함수로 변경되었다.
+
 ### Admin 사이트에 테이블 반영
+
+Admin 사이트에 장고에서 기본으로 제공하는 Users, Groups 테이블이 보인다. models.py 파일에서 정의한 테이블도 Admin 사이트에서 보게 하려면 admin.py 파일에 등록하면 된다.
+
+```
+from django.contrib import admin
+
+# Register your models here.
+
+from django.contrib import admin
+from polls.models import Question, Choice
+
+admin.site.register(Question)
+admin.site.register(Choice)
+```
+
+models.py 모듈에서 정의한 두 클래스를 임포트 하고, admin.site.register 함수를 이용해 Admin 사이트에 등록해주면 된다.
+
+**테이블을 새로 만들때는 models.py와 admin.py 두 개의 파일을 함께 수정해야 한다는 것을 기억해두자.**
 
 ### DB 변경사항 반영
 

@@ -260,7 +260,7 @@ makemigrations 명령을 하면 polls/migrations 디렉토리 하위에 마이�
 
 ### 확인해보기
 
-![alt text](https://github.com/elementalkiss/til/django/img/1.png "Admin View")
+![원본 바로가기](https://github.com/ElementalKiss/TIL/blob/master/django/img/1.png "Admin View")
 
 외부에서 접근하기 위해
 

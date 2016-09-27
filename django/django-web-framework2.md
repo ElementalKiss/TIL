@@ -235,7 +235,38 @@ models.py 모듈에서 정의한 두 클래스를 임포트 하고, admin.site.r
 
 ### DB 변경사항 반영
 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+#### 실행
+
+```
+[elkiss@elkiss-centos ch3]$ python manage.py makemigrations
+Migrations for 'polls':
+  polls/migrations/0001_initial.py:
+    - Create model Choice
+    - Create model Question
+    - Add field question to choice
+[elkiss@elkiss-centos ch3]$ python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, polls, sessions
+Running migrations:
+  Applying polls.0001_initial... OK
+```
+
+makemigrations 명령을 하면 polls/migrations 디렉토리 하위에 마이그레이션 파일들이 생긴다.
+
 ### 확인해보기
+
+![원본 바로가기](https://github.com/ElementalKiss/TIL/blob/master/django/img/1.png "Admin View")
+
+외부에서 접근하기 위해
+
+```
+python manage.py runserver 0.0.0.0:8000
+```
 
 ## 애플리케이션 개발하기 - View와 Template 코딩
 

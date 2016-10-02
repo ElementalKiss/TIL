@@ -148,3 +148,103 @@ std::initializer_list 생성자가 사용: 값이 각각 10과 20인 두 요소�
 
 # 항목 8: 0과 NULL보다 nullptr을 선호하라.
 
+## 0
+
+* 리터럴 0은 int이지 포인터가 아니다.
+* 포인터만 사용할 수 있는 위치에 0이 있으면 C++은 마지못해 그것을 null 포인터로 해석한다.
+* C++ 기본적인 방침은 0은 int이고 포인터가 아니다.
+
+## NULL
+
+* 컴파일러가 NULL을 정의한 것에 따라 다르다.
+* NULL에 int 이외의 정수 형식 long을 부여할 수 있다.
+* NULL도 0과 마찬가지로 포인터 형식이 아니다.
+
+## 예시
+
+```
+// f의 세 가지 중복적재
+void f(int);
+void f(bool);
+void f(void*);
+
+f(0); // f(int)를 호출
+f(NULL); // 컴파일되지 않을 수 있지만 보통 f(int)를 호출
+```
+
+## nullptr 장점
+
+### nullptr은 정수 형식이 아니다.
+
+모든 형식의 포인터라고 생각하면 된다. std::nullptr_t이고 std::nullptr_t 자체는 다시 "nullptr의 형식"으로 정의한 순환 정의이다. std::nullptr_t는 모든 raw 포인터 형식으로 암묵적으로 변환되며, nullptr은 마치 모든 형식의 포인터처럼 동작한다.
+
+```
+f(nullptr) // f(void*)를 호출
+```
+
+### auto
+
+```
+auto result = findRecord();
+
+if (result == 0) { ... }
+
+if (result == nullptr) { ... }
+```
+
+findRecord의 반환 형식을 모른다면 result의 형식을 명확하게 말할 수 없다. 문맥에서는 포인터 형식일수도 잇고 정수 형식일 수도 있다. 반명 nullptr을 사용하면 이 중의성(ambiguity)가 해소된다.
+
+### 템플릿
+
+3개의 뮤텍스를 잠근 상태로 호출 가능한 함수들이 있다. f1, f2, f3라고 가정하자.
+
+```
+int f1(...);
+int f2(...);
+int f3(...);
+
+std::mutex f1m, f2m, f3m; // 뮤택스들
+
+using MuxGuard = stD::lock_guard<std::mutex>;
+...
+{
+  MuxGuard g(f1m);
+  auto result = f1(0);
+}
+...
+{
+  MuxGuard g(f2m);
+  auto result = f2(NULL);
+}
+...
+{
+  MuxGuard g(f1m);
+  auto result = f1(0);
+}
+```
+
+아래 코드를 템플릿화 하여 소스 코드 중복을 피하기 위해 이 패턴을 템플릿화 하면 다음과 같다.
+
+```
+template<typename FuncType, typename MuxType, typename PtrType>
+decltype(auto) lockAndCall(FuncType func, MuxType& mutex, PtrType ptr)
+{
+  using MuxFuard = std::lock_guard<MuxType>;
+  
+  MuxFuard g(mutex);
+  return func(ptr);
+}
+```
+
+이렇게 코드를 짜면,
+
+```
+auto result1 = lockAndCall(f1, f1m, 0); // error
+auto result2 = lockAndCall(f2, f2m, NULL); // error
+auto result3 = lockAndCall(f3, f3m, nullptr); // error
+```
+
+## 기억해 둘 사항들
+
+* 0과 NULL보다 nullptr을 선호하라.
+* 정수 형식과 포인터 형식에 대한 중복적재를 피하라.

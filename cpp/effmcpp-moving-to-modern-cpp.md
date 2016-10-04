@@ -248,3 +248,62 @@ auto result3 = lockAndCall(f3, f3m, nullptr); // error
 
 * 0과 NULL보다 nullptr을 선호하라.
 * 정수 형식과 포인터 형식에 대한 중복적재를 피하라.
+
+
+# 항목 9: typedef보다 별칭 선언을 선호하라.
+
+## 별칭 선언(alias declaration)의 장점
+
+### typedef보다 직관적이다.
+
+```
+// typedef
+typedef std::unique_ptr<std::unordered_map<std::string, std::string>> UPtrMapSS;
+typedef void (*FP)(int, const std::string&); // void pointer
+
+// alias declaration
+using UPtrMapSS = std::unique_ptr<std::unordered_map<std::string, std::string>>
+using FP = void (*)(int, const std::string&);
+```
+
+### 템플릿 사용에 강력하다.
+
+```
+// typedef
+template <typename T>
+struct MyAllocList {
+  typedef std::list<T, MyAlloc<T>> type;
+};
+
+MyAllocList<Widget>::type lw;
+
+// alias declaration
+template <typename T>
+using MyAllocList = std::list<T, MyAlloc<T>>;
+
+MyAllocList<Widget> lw;
+```
+
+중요한 것은 typename과 ::type이 계속 따라다닌 다는 것. MyAlloacList<T>::type은 소위 의존적 형식(dependnt type)이라 하며 C++에선 의존적 형식의 이름 앞에 반드시 typename을 붙여야 한다.
+
+## std의 특빌 변환 예시
+
+```
+std::remove_const<T>::type // C++11의 const T -> T
+std::remove_const_t<T> // C++14
+```
+
+std::remove_const_t<T>의 정의
+
+```
+template <class T>
+using remove_const_t = typename remove_const<T>::type;
+```
+
+## 기억해 둘 사항들
+
+* typedef는 템플릿화를 지원하지 않지만, 별칭 선언은 지원한다.
+* 별칭 템플릿에서는 ::type 접미어를 붙일 필요가 없다. 템플릿 안에서 typedef를 지칭할 때에는 typename 접두사를 붙여야 하는 경우가 많다.
+* C++14는 C++11의 모든 형식 특질 변환에 대한 별칭 템플릿들을 제공한다.
+
+# 항목 10: 범위 없는 enum보다 범위 있는 enum을 선호하라.

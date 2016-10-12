@@ -307,3 +307,15 @@ using remove_const_t = typename remove_const<T>::type;
 * C++14는 C++11의 모든 형식 특질 변환에 대한 별칭 템플릿들을 제공한다.
 
 # 항목 10: 범위 없는 enum보다 범위 있는 enum을 선호하라.
+
+C++98의 enum은 unscoped enum이라 하고, 이에 대응되는 C++11의 새로운 enum은 scoped enum리고 한다. 기존 C++98은 이름 누수가 발생하는 문제가 있다. enum으로 설정한 변수 이름을 못 쓴다는 이야기다.
+
+```
+enum class Color { black, white, red};
+
+auto white = false; // 가능.
+
+Color c = white; // 불가능. white라는 열거자 없음
+
+Color c = Color::white; // 가능.
+```

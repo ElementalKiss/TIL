@@ -270,6 +270,26 @@ python manage.py runserver 0.0.0.0:8000
 
 ## 애플리케이션 개발하기 - View와 Template 코딩
 
+* 처리흐름 설계
+| url              | view     | template           |
+| ---              | ---      | ---                |
+| /polls/          | index()  | index.html         |
+| /polls/5/        | detail() | detail.html        |
+| /polls/5/vote    | vote()   | redirect to result |
+| /polls/5/results | result() | results.html       |
+
+* URLconf 설계 - URL과 뷰 매핑
+| url pattern     | view name | view process              |
+| ---             | ---       | ---                       |
+| /polls/         | index()   | view index.html template  |
+| /polls/5        | deatil()  | view detail.html template |
+| /polls/5/vote   | vote()    | post deatil.html form     |
+| /polls/5/result | results() | view result.html          |
+| /admin/         | django    | view admin site           |
+
+URLconf를 코딩한 후 뷰, 템플릿 또는 템플릿, 뷰 순으로 코딩한다.
+urls.py 작성 -> views.index() 함수 작성 -> views.detail() 함수 작성 -> views.vote() 함수 작성 -> views.results() 함수 작성
+
 ### URLconf 코딩
 
 ### 뷰 함수 index() 및 템플릿 작성

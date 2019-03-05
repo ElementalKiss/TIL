@@ -93,13 +93,13 @@ int Calculate(int opnum, int opnds[], char op)
 
     switch(op) {
     case '+':
-        for(int i = 1; i<opnum; i++) result += opnds[i];
+        for (int i = 1; i < opnum; i++) result += opnds[i];
         break;
     case '-':
-        for(int i = 1; i<opnum; i++) result -= opnds[i];
+        for (int i = 1; i < opnum; i++) result -= opnds[i];
         break;
     case '*':
-        for(int i = 1; i<opnum; i++) result *= opnds[i];
+        for (int i = 1; i < opnum; i++) result *= opnds[i];
         break;
     }
     return result;

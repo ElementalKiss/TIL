@@ -1,4 +1,4 @@
-// Tcpip06_uecho_server_win.cpp: 콘솔 응용 프로그램의 진입점을 정의합니다.
+// Tcpip06_uecho_server_win.cpp: 콘솔 ?�용 ?�로그램??진입?�을 ?�의?�니??
 //
 
 #include "stdafx.h"

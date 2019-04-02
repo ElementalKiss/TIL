@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip07_file_server_win", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip07_file_client_win", "Tcpip07_file_client_win\Tcpip07_file_client_win.vcxproj", "{87FD8570-0A7B-4A0D-92FF-24F6604D3878}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip08", "Tcpip08\Tcpip08.vcxproj", "{56852670-1165-4418-B7A6-0C6255263655}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +133,14 @@ Global
 		{87FD8570-0A7B-4A0D-92FF-24F6604D3878}.Release|x64.Build.0 = Release|x64
 		{87FD8570-0A7B-4A0D-92FF-24F6604D3878}.Release|x86.ActiveCfg = Release|Win32
 		{87FD8570-0A7B-4A0D-92FF-24F6604D3878}.Release|x86.Build.0 = Release|Win32
+		{56852670-1165-4418-B7A6-0C6255263655}.Debug|x64.ActiveCfg = Debug|x64
+		{56852670-1165-4418-B7A6-0C6255263655}.Debug|x64.Build.0 = Debug|x64
+		{56852670-1165-4418-B7A6-0C6255263655}.Debug|x86.ActiveCfg = Debug|Win32
+		{56852670-1165-4418-B7A6-0C6255263655}.Debug|x86.Build.0 = Debug|Win32
+		{56852670-1165-4418-B7A6-0C6255263655}.Release|x64.ActiveCfg = Release|x64
+		{56852670-1165-4418-B7A6-0C6255263655}.Release|x64.Build.0 = Release|x64
+		{56852670-1165-4418-B7A6-0C6255263655}.Release|x86.ActiveCfg = Release|Win32
+		{56852670-1165-4418-B7A6-0C6255263655}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,7 @@ int main(int argc, char* argv[])
 {
     pid_t pid;
     int lval = 20;
+    int rval = 18;
     gval++;
     lval += 5;
 

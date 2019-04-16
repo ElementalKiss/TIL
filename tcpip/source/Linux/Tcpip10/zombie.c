@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
     if (pid == 0) {
         puts("Hi, I am a child process");
     } else {
-        printf("clie process ID: %d \n", pid);
+        printf("child process ID: %d \n", pid);
         sleep(30);
     }
 

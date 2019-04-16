@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     if (pid == 0) {
         return 3;
     } else {
-        print("child pid: %d \n", pid);
+        printf("child pid: %d \n", pid);
         pid = fork();
         if (pid == 0) {
             exit(7);

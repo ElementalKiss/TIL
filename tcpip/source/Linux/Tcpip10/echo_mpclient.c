@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
 void read_routine(int sock, char* buf)
 {
-	while (true) {
+	while (1) {
 		int str_len = read(sock, buf, BUF_SIZE);
 		if (str_len == 0) {
 			return;
@@ -59,7 +59,7 @@ void read_routine(int sock, char* buf)
 
 void write_routine(int sock, char* buf)
 {
-	while (true) {
+	while (1) {
 		fgets(buf, BUF_SIZE, stdin);
 		if (!strcmp(buf,"q\n") || !strcmp(buf,"Q\n")) {	
 			shutdown(sock, SHUT_WR);

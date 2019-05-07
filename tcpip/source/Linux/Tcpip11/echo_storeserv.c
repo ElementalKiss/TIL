@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
         
         if (pid == 0) {
             close(serv_sock);
+            
             while((str_len = read(clnt_sock, buf, BUF_SIZE)) != 0) {
                 write(clnt_sock, buf, str_len);
                 write(fds[1], buf, str_len);
@@ -105,7 +106,7 @@ void read_childproc(int sig)
 
 void error_handling(char* message)
 {
-    fputs(buf, stderr);
+    fputs(message, stderr);
     fputc('\n', stderr);
     exit(1);
 }

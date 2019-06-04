@@ -19,5 +19,5 @@ int main(int argc, char* argv[])
     printf("First message: %s \n", buf1);
     printf("Second message: %s \n", buf2);
 
-	return 0;
+    return 0;
 }

@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip20_chat_serv", "Tcpip2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip20_chat_clnt", "Tcpip20_chat_clnt\Tcpip20_chat_clnt.vcxproj", "{EEF21A0D-9F32-4F14-B658-4EA9FC01E2E6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tcpip21_AsyncNotificationEchoServer", "Tcpip21_AsyncNotificationEchoServer\Tcpip21_AsyncNotificationEchoServer.vcxproj", "{48FD16E3-3CB3-4D71-BE97-370737598A9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -241,6 +243,14 @@ Global
 		{EEF21A0D-9F32-4F14-B658-4EA9FC01E2E6}.Release|x64.Build.0 = Release|x64
 		{EEF21A0D-9F32-4F14-B658-4EA9FC01E2E6}.Release|x86.ActiveCfg = Release|Win32
 		{EEF21A0D-9F32-4F14-B658-4EA9FC01E2E6}.Release|x86.Build.0 = Release|Win32
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Debug|x64.ActiveCfg = Debug|x64
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Debug|x64.Build.0 = Debug|x64
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Debug|x86.ActiveCfg = Debug|Win32
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Debug|x86.Build.0 = Debug|Win32
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Release|x64.ActiveCfg = Release|x64
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Release|x64.Build.0 = Release|x64
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Release|x86.ActiveCfg = Release|Win32
+		{48FD16E3-3CB3-4D71-BE97-370737598A9E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,7 +14,6 @@
 * 입출력 함수의 반환시점과 데이터 송수신의 완료시점이 일치하지 않는 경우를 말한다.
 * 예시: epoll 비동기 입출력
 
-
 ### 동기화 입출력의 단점과 비동기의 해결책
 
 * 입출력이 진행되는 동안 호출된 함수가 반환을 하지 않아 CPU가 다른 일을 할 수 없다.
@@ -89,14 +88,67 @@ BOOL WSACloseEvent(WSAEVENT hEvent);
 
 ### 이벤트 발생유무의 확인
 
+* WSAEventSelect 함수호출 이후를 고민할 차례.
+* 이벤트 발생 유무를 확인하는 함수가 있는데 WaitForMultipleObject와 매개변수 하나 많다는걸 제외하고는 같다.
+
 ```cpp
 #include <winsock2.h>
 DWORD WSAWaitForMultipleEvents(DWORD cEvents, const WSAEVENT* lphEvents, BOOL fWaitAll, DWORD dwTimeout, BOOL fAlertable);
 ```
 
+* 단 한번의 호출로 signaled 상태로 전이된 Event 오브젝트의 핸들 정보를 모두 알 수 없다.
+* 이 함수에서는 signaled 상태로 전이된 Event 오브젝트의 첫 번째 인덱스 값만 알 수 있다.
+* 해당 Evnet 오브젝트가 manual-reset 모드기 떄문에 다음과 같은 방식으로 코드 작성이 가능하다.
+
+~~~cpp
+pos = WSAWaitForMultipleEvents(numOfSock, hEventArray, FALSE, WSA_INFINITE, FALSE);
+startIndex = pos - WSA_WAIT_EVENT_0;
+
+for (i = startIndex; i < numOfSock; ++i) {
+    int sigEventIndex = WSAWaitForMultipleEvents(1, &hEventArray[i], TRUE, 0, FALSE);
+}
+~~~
+
+* siganeld 상태로 놓인 첫 번쩌 Event 오브젝트로부터 for loop을 통해 마지막 오브젝트까지 signaled 상태로 전이 여부를 확인.
+* Timeout을 0을 보냈기 때문에 호출과 동시에 반환한다. 이는 Event 오브젝트가 manual-reset 모드기떄문에 가능하다.
+
 ### 이벤트 종류의 구분
+
+* 마지막으로 signaled 상태로 된 원인을 확인해야 한다.
 
 ```cpp
 #include <winsock2.h>
 int WSAEnumNetworkEvents(SOCKET s, WSAEVENT hEventObject, LPWSANETWORKEVENTS lpNetworkEvents);
 ```
+
+* 해당 함수는 manual-reset 모드의 Event 오브젝트를 non-signaled 상태로 되돌리기 까지 한다. 별도의 ResetEvent를 호출할 필요가 없다.
+* 구조체 WSANETWORKEVENTS
+
+```cpp
+typedef struct _WSANETWORKEVENTS
+{
+    long lNetworkEvents;
+    int iErrorCode[FD_MAX_EVENTS];
+} WSANETWORKEVENTS, *LPWSANETWORKEVENTS;
+```
+
+* WSAEventSelect 함수의 세 번째 인자로 전달되는 상수와 마찬가지로 수신할 데이터가 존재하면 FD_READ, 연결요청이 있는 경우 FD_ACCEPT.
+
+~~~cpp
+WSAEnumNetworkEvents(hSock, hEvent, &netEvents);
+if (netEvents.lNetworkEvents & FD_ACCECPT) {
+    // FD_ACCECPT 이벤트 핸들링
+}
+
+if (netEvets.lNetworkEvets & FD_READ) {
+    // FD_READ 이벤트 핸들링
+}
+
+// ... 등등 이벤트 핸들링
+
+if (netEvents.iErrorCode[FD_READ_BIT] != 0) {
+    // FD_READ 이벤트 관련 오류 발생
+}
+
+// ... 등등 이벤트 오류 핸들링
+~~~

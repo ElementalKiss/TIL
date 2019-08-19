@@ -48,9 +48,66 @@ WSASocket(PT_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 * 두 소켓간의(서버, 클라이언트) 연결 과정은 일반 소켓의 연결과정과 차이가 없다.
 * 하지만 데이터의 입출력에 사용되는 함수는 달리해야 한다.
 
-(작성중)
+```cpp
+#include <winsock2.h>
+
+int WSASend(SOCKET s, LPWSABUF lpBuffers, DWORD dwBufferCount,
+            LPDWORD lpNumberOfBytesSent, DWORD dwFlags, LPWSAOVERLAPPED lpOverlapped,
+            LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+// 성공 시 0, 실패 시 SOCKET_ERROR 반환
+```
+
+* 위 함수의 두 번째 인자로 들어가는 구조체 __WSABUF
+
+```cpp
+typedef struct __WSABUF
+{
+    u_long len;     // 전송할 데이터의 크기
+    char FAR* buf;  // 버퍼의 주소 값
+} WSABUF, *LPWSABUF;
+```
+
+* 함수의 호출 형태 보기
+
+```cpp
+WSAEVENT event;
+WSAOVERLAPPED overlapped;
+WSABUF dataBuf;
+char buf[BUF_SIZE] = {"data"};
+int recvBytes = 0;
+// ...
+event = WSACreateEvent();
+overlapped.hEvent = event;
+dataBuf.len = sizeof(buf);
+dataBuf.buf = buf;
+WSASend(hSocket, &dataBuf, 1, &recvBytes, 0, &overlapped, NULL);
+// ...
+```
+
+* WSASend 함수의 세 번째 인자가 1인 이유는 두 번째로 전달된, 전송할 데이터가 하나이기 떄문이다.
+* 여섯 번째 인자로 전달된 구조체 WSAOVERLAPPED의 정의
+
+```cpp
+typedef struct _WSAOVERLAPPED
+{
+    DWORD Internal;
+    DWORD InternalHigh;
+    DWORD Offset;
+    DWORD OffsetHigh;
+    WSAEVENT hEvent;
+} WSAOVERLAPPED, *LPWSAOVERLAPPED;
+```
+
+* Internal, InternalHigh는 운영체제 내부적으로 사용되는 멤버
+* Offset, OffsetHigh 역시 사용이 예약되는 멤버
+* 그렇기 때문에 실제로 관심을 둘 멤버는 hEvent가 전부다.
+* Overlapped IO를 진행하려면 lpOverlapped에는 항상 NULL이 아닌 유효한 구조체 변수의 주소 값을 전달해야 한다. NULL이면 블로킹 모드로 동작하는 일반 소켓으로 간주된다.
+* WSASend 함수호출을 통해 동시에 둘 이상의 영역으로 데이터 전송하는 경우 WSAOVERLAPPED 구조체 변수를 각각 별도로 구성해야 한다. 이는 구조체 변수가 진행 과정에서 운영체제에 의해 참조되기 떄문이다.
 
 ### WSASend 함수에 관련해서 한가지 더!
+
+(작성중)
+
 ### Overlapped IO 진행하는 WSARecv 함수
 
 ## 22-2 Overlapped IO에서의 입출력 완료의 확인

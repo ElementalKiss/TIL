@@ -104,12 +104,30 @@ typedef struct _WSAOVERLAPPED
 * Overlapped IO를 진행하려면 lpOverlapped에는 항상 NULL이 아닌 유효한 구조체 변수의 주소 값을 전달해야 한다. NULL이면 블로킹 모드로 동작하는 일반 소켓으로 간주된다.
 * WSASend 함수호출을 통해 동시에 둘 이상의 영역으로 데이터 전송하는 경우 WSAOVERLAPPED 구조체 변수를 각각 별도로 구성해야 한다. 이는 구조체 변수가 진행 과정에서 운영체제에 의해 참조되기 떄문이다.
 
-### WSASend 함수에 관련해서 한가지 더!
+### WSASend, WSARecv 함수에 관련해서 한가지 더!
 
-(작성중)
-
-### Overlapped IO 진행하는 WSARecv 함수
+* WSASend 함수가 호출되자마자 반환하는데, 어떻게 전송된 데이터의 크기가 저장되나요?
+    + WSASend 함수라고 무조건 반환과 전송완료 시간이 불일치 하는 것은 아니다.
+    + 이런 경우 WSASend함수가 0을 반환하고, 매개변수 lpNumberOfBytesSent로 전달된 주소의 변수에는 실제 전송된 데이터의 크기정보가 저장된다.
+* WSA가 반환을 한 다음에도 계속해서 데이터의 전송이 이뤄지는 상황이라면?
+    + 확인 가능한 오류코드로 WSA_IO_PENDING이 등록되고 WSAGetOverlappedResult 함수로 실제 전송된 데이터의 크기를 확인 해야 한다.
+* WSARecv는 기능적으로 데이터를 수신하는냐에 대한 차이만 있고 나머지는 동일하다.
 
 ## 22-2 Overlapped IO에서의 입출력 완료의 확인
 ### Event 오브젝트 사용하기
+
+* IO가 완료되면 WSAOVERLAPPED 구조체 변수가 참조하는 Event 오브젝트가 signaled 상태가 된다.
+* IO의 완료 및 결과를 확인하려면 WSAGetOverlappedResult 함수를 사용한다.
+* WSAGetLastError를 통해 오류 값을 가져오고 WSA_IO_PENDING이라면 WSASend 함수의 호출결과가 오류 상황이 아니라 완료되지 않는 상태임을 의미한다.
+
 ### Completion Routine 사용하기
+
+* WSASend, WSARecv 마지막 전달인자를 통해 등록되는, Completion Routine가 있다.
+* Pending된 IO가 완료되면, 이 함수를 호출해 줘!
+    + 자동으로 호출될 함수를 등록하는 형태로 IO 완료 이후의 작업을 처리한다.
+    + 운영체제: IO 요청한 쓰레드가 alertable wait 상태에 놓였을 때만 Completion Routine를 호출할게!
+    + alertable wait란 운영체제가 전달하는 메시지의 수신을 대기하는 쓰레드의 상태를 뜻이다.
+        + WaitForSingleObjectEx
+        + WaitForMultipleObjectEx
+        + WSAWaitForMultipleEvents
+        + SleepEx
